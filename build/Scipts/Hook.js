@@ -63,8 +63,8 @@ var JumpandHook;
                 this.cmpAudioPull.play(true);
             }
         }
-        Hook.audioPull = new f.Audio("../Assets/Sound/pull.mp3");
-        Hook.audioPush = new f.Audio("../Assets/Sound/push.mp3");
+        Hook.audioPull = new f.Audio("./../Assets/Sound/pull.mp3");
+        Hook.audioPush = new f.Audio("./../Assets/Sound/push.mp3");
         Hook.mesh = new f.MeshCube("Gun");
         Hook.material = new f.Material("MaterialGun", f.ShaderFlat, new f.CoatColored(f.Color.CSS("grey")));
         return Hook;

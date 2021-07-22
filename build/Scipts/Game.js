@@ -65,7 +65,7 @@ var JumpandHook;
                 return this._startButton;
             }
             async init() {
-                let response = await fetch("../config.json");
+                let response = await fetch("./../config.json");
                 this.config = await response.json();
                 await f.Project.loadResourcesFromHTML();
                 let resource = f.Project.resources[Game.graphId];
