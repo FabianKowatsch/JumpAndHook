@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Jump and Hook</title>
+    <meta charset="utf-8" />
+    <!--Load FUDGE-->
+    <script src="../OimoPhysics/OimoPhysics.js"></script>
+    <script src="../FudgeCore/FudgeCore.js"></script>
+    <script src="../FudgeUI/FudgeUserInterface.js"></script>
+    <script src="../build/JumpandHook/UI.js"></script>
+    <script src="../build/JumpandHook/Hook.js"></script>
+    <script src="../build/JumpandHook/ComponentScriptRope.js"></script>
+    <script src="../build/JumpandHook/Avatar.js"></script>
+    <script src="../build/JumpandHook/ComponentScriptProp.js"></script>
+    <script src="../build/JumpandHook/ComponentScriptTrap.js"></script>
+    <script src="../build/JumpandHook/ComponentScriptPlatform.js"></script>
+    <script src="../build/JumpandHook/GameState.js"></script>
+    <script src="../build/JumpandHook/Game.js"></script>
+    <script src="../build/JumpandHook/main.js"></script>
+    <!--Link stylesheet and internal resources-->
+    <link rel="stylesheet" href="styles.css" />
+    <link type="resources" src="scene.json" />
+    <!--Auto-View-->
+  </head>
+  <body>
+    <!--Canvas for FUDGE to render to-->
+    <div class="wrapper">
+      <canvas class="fullscreen" id="canvas"></canvas>
+      <div class="crosshair"></div>
+
+      <div id="ui">
+        <input type="text" key="score" placeholder="0" min="0" disabled />
+      </div>
+    </div>
+    <div id="menu" class="visible">
+      <button id="start">PLAY</button>
+      <div class="score">Highscore: <span id="highscore">0</span></div>
+      <div class="score">Letzter score: <span id="lastscore">0</span></div>
+      <div id="options">
+        <label for="volume">Lautstärke</label>
+        <input type="range" name="volume" key="volume" id="volume" value="20" />
+      </div>
+      <div id="credits">music by Karl Casey @ White Bat Audio</div>
+    </div>
+  </body>
+</html>

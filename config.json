@@ -1,0 +1,8 @@
+{
+  "speed": 5,
+  "jumpforce": 150,
+  "weight": 75,
+  "timeReduction": 100,
+  "debug": false,
+  "disableMusic": true
+}
