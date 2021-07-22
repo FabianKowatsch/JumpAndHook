@@ -97,7 +97,7 @@ var JumpandHook;
                 let cmpRigid = new f.ComponentRigidbody(0, f.PHYSICS_TYPE.STATIC, f.COLLIDER_TYPE.CUBE, f.PHYSICS_GROUP.TRIGGER);
                 this.triggerNode.addComponent(cmpRigid);
                 this.triggerNode.addComponent(new f.ComponentTransform());
-                this.triggerNode.mtxLocal.scale(new f.Vector3(2, 6, 10));
+                this.triggerNode.mtxLocal.scale(new f.Vector3(2, 5, 10));
                 this.triggerNode.mtxLocal.translate(new f.Vector3(3.5, 0, 0));
                 this.node.appendChild(this.triggerNode);
                 f.Physics.adjustTransforms(this.node.getAncestor(), true);

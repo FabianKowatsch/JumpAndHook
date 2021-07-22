@@ -47,6 +47,7 @@ var JumpandHook;
                     }
                 };
                 this.state = GAMESTATE.MENU;
+                console.log(location.protocol);
                 window.addEventListener("load", this.init.bind(this));
             }
             get canvas() {

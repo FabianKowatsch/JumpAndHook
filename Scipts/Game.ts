@@ -33,6 +33,7 @@ namespace JumpandHook {
 
     constructor() {
       this.state = GAMESTATE.MENU;
+      console.log(location.protocol);
       window.addEventListener("load", this.init.bind(this));
     }
     public get canvas(): HTMLCanvasElement {
