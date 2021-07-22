@@ -179,7 +179,7 @@ var JumpandHook;
                 return f.Physics.raycast(origin, direction, _distance);
             }
         }
-        Avatar.audioBG = new f.Audio("../../Assets/Sound/soundtrack.mp3");
+        Avatar.audioBG = new f.Audio(JumpandHook.Utils.path() + "../../Assets/Sound/soundtrack.mp3");
         return Avatar;
     })();
     JumpandHook.Avatar = Avatar;

@@ -4,5 +4,5 @@
   "weight": 75,
   "timeReduction": 100,
   "debug": false,
-  "disableMusic": true
+  "disableMusic": false
 }

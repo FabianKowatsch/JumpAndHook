@@ -33,7 +33,6 @@ namespace JumpandHook {
 
     constructor() {
       this.state = GAMESTATE.MENU;
-      console.log(location.protocol);
       window.addEventListener("load", this.init.bind(this));
     }
     public get canvas(): HTMLCanvasElement {
@@ -52,7 +51,7 @@ namespace JumpandHook {
     }
 
     private async init(): Promise<void> {
-      let response: Response = await fetch("./../config.json");
+      let response: Response = await fetch(Utils.path() + "../config.json");
       this.config = await response.json();
       await f.Project.loadResourcesFromHTML();
       let resource: f.SerializableResource = f.Project.resources[Game.graphId];
