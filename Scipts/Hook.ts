@@ -1,8 +1,8 @@
 namespace JumpandHook {
   import f = FudgeCore;
   export class Hook extends f.Node {
-    private static audioPull: f.Audio = new f.Audio(Utils.path() + "../../Assets/Sound/pull.mp3");
-    private static audioPush: f.Audio = new f.Audio(Utils.path() + "../../Assets/Sound/push.mp3");
+    private static audioPull: f.Audio = new f.Audio(Utils.path() + "../Assets/Sound/pull.mp3");
+    private static audioPush: f.Audio = new f.Audio(Utils.path() + "../Assets/Sound/push.mp3");
     private static mesh: f.Mesh = new f.MeshCube("Gun");
     private static material: f.Material = new f.Material("MaterialGun", f.ShaderFlat, new f.CoatColored(f.Color.CSS("grey")));
     public cmpRigid: f.ComponentRigidbody;

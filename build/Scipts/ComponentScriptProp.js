@@ -23,7 +23,7 @@ var JumpandHook;
                 this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndComponentAdd);
             }
         }
-        ComponentScriptProp.audio = new f.Audio("./../Assets/Sound/impact.mp3");
+        ComponentScriptProp.audio = new f.Audio(JumpandHook.Utils.path() + "../Assets/Sound/impact.mp3");
         return ComponentScriptProp;
     })();
     JumpandHook.ComponentScriptProp = ComponentScriptProp;

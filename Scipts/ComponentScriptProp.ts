@@ -1,7 +1,7 @@
 namespace JumpandHook {
   import f = FudgeCore;
   export class ComponentScriptProp extends f.ComponentScript {
-    private static audio: f.Audio = new f.Audio("./../Assets/Sound/impact.mp3");
+    private static audio: f.Audio = new f.Audio(Utils.path() + "../Assets/Sound/impact.mp3");
     public name: string = "CmpScriptProp";
     public cmpRigid: f.ComponentRigidbody;
     private cmpAudio: f.ComponentAudio;
