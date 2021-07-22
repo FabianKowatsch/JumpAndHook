@@ -22,27 +22,16 @@ var JumpandHook;
                         cmpRigid.restitution = 0;
                         cmpRigid.friction = 10;
                         this.node.addComponent(cmpRigid);
-                        // this.addTraps();
+                        this.addTraps();
                     }
-                    this.addDeathTrigger();
                     this.addNextTrigger();
+                    this.addDeathTrigger();
                     f.Physics.adjustTransforms(this.node.getParent(), true);
                     let timeout = 10000 - this.index * this.timeLoss;
                     setTimeout(() => {
                         this.sinkPlatform();
+                        // tslint:disable-next-line: align
                     }, timeout);
-                };
-                this.spawnNextPlatform = (_event) => {
-                    if (_event.cmpRigidbody.physicsType != 1 && _event.cmpRigidbody.getContainer().name === "Avatar") {
-                        let nextPlatform = new f.Node("platform" + this.index + 1);
-                        this.node.getParent().addChild(nextPlatform);
-                        nextPlatform.addComponent(new ComponentScriptPlatform(this.index + 1, false, this.timeLoss));
-                        let trigger = this.triggerNode.getComponent(f.ComponentRigidbody);
-                        trigger.removeEventListener("ColliderEnteredCollision" /* COLLISION_ENTER */, this.spawnNextPlatform);
-                        this.triggerNode.removeComponent(trigger);
-                        JumpandHook.game.solvedPlatforms++;
-                        JumpandHook.uiLive.score = JumpandHook.game.solvedPlatforms;
-                    }
                 };
                 this.setGameOverState = (_event) => {
                     let enteredNode = _event.cmpRigidbody.getContainer();
@@ -63,6 +52,25 @@ var JumpandHook;
                         f.Loop.removeEventListener("loopFrame" /* LOOP_FRAME */, this.lower);
                     }
                 };
+                this.spawnNextPlatform = (_event) => {
+                    if (_event.cmpRigidbody.physicsType != 1 && _event.cmpRigidbody.getContainer().name === "Avatar") {
+                        let nextPlatform = new f.Node("platform" + this.index + 1);
+                        this.node.getParent().addChild(nextPlatform);
+                        nextPlatform.addComponent(new ComponentScriptPlatform(this.index + 1, false, this.timeLoss));
+                        let trigger = this.triggerNode.getComponent(f.ComponentRigidbody);
+                        trigger.removeEventListener("ColliderEnteredCollision" /* COLLISION_ENTER */, this.spawnNextPlatform);
+                        this.triggerNode.removeComponent(trigger);
+                        JumpandHook.game.solvedPlatforms++;
+                        JumpandHook.uiLive.score = JumpandHook.game.solvedPlatforms;
+                        if (this.trapNode) {
+                            this.trapNode.activate(false);
+                            this.trapNode.getChildren().forEach((child) => {
+                                if (child.getComponent(f.ComponentRigidbody))
+                                    child.removeComponent(child.getComponent(f.ComponentRigidbody));
+                            });
+                        }
+                    }
+                };
                 this.mesh = f.Project.resources[ComponentScriptPlatform.meshId];
                 this.material = f.Project.resources[ComponentScriptPlatform.materialId];
                 this.index = _index;
@@ -70,7 +78,7 @@ var JumpandHook;
                 this.timeLoss = _timeLoss;
                 this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndAdd);
                 setTimeout(() => {
-                    f.Physics.adjustTransforms(this.node.getParent(), true), 10;
+                    f.Physics.adjustTransforms(this.node.getParent(), true);
                 });
             }
             addNextNode() {
@@ -107,13 +115,10 @@ var JumpandHook;
                 cmpRigid.addEventListener("TriggerEnteredCollision" /* TRIGGER_ENTER */, this.setGameOverState);
             }
             addTraps() {
-                let trapArray = new Array();
-                for (let index = 0; index < Math.round(Math.random() * 3); index++) {
-                    trapArray.push(new f.Node("Trap" + index));
-                }
-                trapArray.forEach((trap) => {
-                    trap.addComponent(new JumpandHook.ComponentScriptTrap(this.mesh, this.material));
-                });
+                this.trapNode = new f.Node("trap" + this.index);
+                this.node.addChild(this.trapNode);
+                let cmpScriptObstacle = new JumpandHook.ComponentScriptObstacle();
+                this.trapNode.addComponent(cmpScriptObstacle);
             }
             sinkPlatform() {
                 f.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.lower);

@@ -1,18 +1,16 @@
 namespace JumpandHook {
   import f = FudgeCore;
 
-  export class ComponentScriptTrap extends f.ComponentScript {
-    private static meshId: string = "MeshExtrusion|2021-07-22T15:37:50.445Z|19125";
-    private static material: f.Material = new f.Material("MatTrap", f.ShaderFlat, new f.CoatColored(new f.Color(1, 1, 0, 1)));
+  export class ComponentScriptObstacle extends f.ComponentScript {
+    private static mesh: f.Mesh = new f.MeshCube("ObstacleMesh");
+    private static material: f.Material = new f.Material("MatObstacle", f.ShaderFlat, new f.CoatColored(new f.Color(1, 1, 0, 1)));
     public name: string = "CmpScriptObstacle";
     public triggerRigid: f.ComponentRigidbody;
-    private mesh: f.Mesh;
     private node: f.Node;
     private trap: f.Node;
     private trapRigid: f.ComponentRigidbody;
     constructor() {
       super();
-      this.mesh = <f.Mesh>f.Project.resources[ComponentScriptTrap.meshId];
       this.addEventListener(f.EVENT.COMPONENT_ADD, this.hndComponentAdd);
     }
 
@@ -28,8 +26,8 @@ namespace JumpandHook {
       this.trap.addComponent(cmpTransform);
       this.trap.mtxLocal.scale(new f.Vector3(10, 4, 0.2));
       this.trap.mtxLocal.translate(new f.Vector3(0, 0.5, 0));
-      this.trap.addComponent(new f.ComponentMaterial(ComponentScriptTrap.material));
-      this.trap.addComponent(new f.ComponentMesh(this.mesh));
+      this.trap.addComponent(new f.ComponentMaterial(ComponentScriptObstacle.material));
+      this.trap.addComponent(new f.ComponentMesh(ComponentScriptObstacle.mesh));
       this.trapRigid = new f.ComponentRigidbody(20, f.PHYSICS_TYPE.STATIC, f.COLLIDER_TYPE.CUBE, f.PHYSICS_GROUP.DEFAULT);
       this.trap.addComponent(this.trapRigid);
       this.node.addChild(this.trap);

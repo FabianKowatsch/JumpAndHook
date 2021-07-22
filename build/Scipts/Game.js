@@ -19,6 +19,7 @@ var JumpandHook;
                 this.sideMovement = 0;
                 this.start = () => {
                     this.canvas.requestPointerLock();
+                    this.setStartingPlatform();
                     this.toggleMenu();
                     this.state = GAMESTATE.RUNNING;
                     f.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.update);
@@ -70,12 +71,10 @@ var JumpandHook;
                 let resource = f.Project.resources[Game.graphId];
                 this.root = resource;
                 let volume = document.getElementById("volume");
-                console.log(volume);
                 this.viewport = new f.Viewport();
                 this.initPhysics();
                 this.createAvatar();
                 this.createRigidbodies();
-                this.setStartingPlatform();
                 this.showScores();
                 this.viewport.initialize("Viewport", this.root, this.cmpCamera, this.canvas);
                 f.AudioManager.default.listenTo(this.root);
@@ -172,8 +171,9 @@ var JumpandHook;
                 }
             }
             pointerLockChange(_event) {
-                if (this.isLocked)
-                    this.state = GAMESTATE.MENU;
+                if (this.isLocked) {
+                    // this.state = GAMESTATE.MENU;
+                }
                 this.isLocked = !this.isLocked;
             }
             checkKeyboardInputs() {

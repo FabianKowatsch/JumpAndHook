@@ -11,6 +11,7 @@ namespace JumpandHook {
     private material: f.Material;
     private node: f.Node;
     private triggerNode: f.Node;
+    private trapNode: f.Node;
     private deathNode: f.Node;
     private isFirst: boolean;
     constructor(_index: number, _isFirst: boolean, _timeLoss: number) {
@@ -22,9 +23,10 @@ namespace JumpandHook {
       this.timeLoss = _timeLoss;
       this.addEventListener(f.EVENT.COMPONENT_ADD, this.hndAdd);
       setTimeout(() => {
-        f.Physics.adjustTransforms(this.node.getParent(), true), 10;
+        f.Physics.adjustTransforms(this.node.getParent(), true);
       });
     }
+
     private hndAdd = (_event: f.Eventƒ) => {
       this.node = this.getContainer();
 
@@ -41,14 +43,16 @@ namespace JumpandHook {
         cmpRigid.restitution = 0;
         cmpRigid.friction = 10;
         this.node.addComponent(cmpRigid);
-        // this.addTraps();
+        this.addTraps();
       }
-      this.addDeathTrigger();
       this.addNextTrigger();
+
+      this.addDeathTrigger();
       f.Physics.adjustTransforms(this.node.getParent(), true);
       let timeout: number = 10000 - this.index * this.timeLoss;
       setTimeout(() => {
         this.sinkPlatform();
+        // tslint:disable-next-line: align
       }, timeout);
     };
 
@@ -89,29 +93,11 @@ namespace JumpandHook {
     }
 
     private addTraps(): void {
-      let trapArray: f.Node[] = new Array<f.Node>();
-
-      for (let index: number = 0; index < Math.round(Math.random() * 3); index++) {
-        trapArray.push(new f.Node("Trap" + index));
-      }
-
-      trapArray.forEach((trap) => {
-        trap.addComponent(new ComponentScriptTrap(this.mesh, this.material));
-      });
+      this.trapNode = new f.Node("trap" + this.index);
+      this.node.addChild(this.trapNode);
+      let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
+      this.trapNode.addComponent(cmpScriptObstacle);
     }
-
-    private spawnNextPlatform = (_event: f.EventPhysics) => {
-      if (_event.cmpRigidbody.physicsType != 1 && _event.cmpRigidbody.getContainer().name === "Avatar") {
-        let nextPlatform: f.Node = new f.Node("platform" + this.index + 1);
-        this.node.getParent().addChild(nextPlatform);
-        nextPlatform.addComponent(new ComponentScriptPlatform(this.index + 1, false, this.timeLoss));
-        let trigger: f.ComponentRigidbody = this.triggerNode.getComponent(f.ComponentRigidbody);
-        trigger.removeEventListener(f.EVENT_PHYSICS.COLLISION_ENTER, this.spawnNextPlatform);
-        this.triggerNode.removeComponent(trigger);
-        game.solvedPlatforms++;
-        uiLive.score = game.solvedPlatforms;
-      }
-    };
 
     private setGameOverState = (_event: f.EventPhysics) => {
       let enteredNode: f.Node = _event.cmpRigidbody.getContainer();
@@ -133,6 +119,25 @@ namespace JumpandHook {
       rigid.translateBody(new f.Vector3(0, -1, 0));
       if (rigid.getPosition().y <= -70) {
         f.Loop.removeEventListener(f.EVENT.LOOP_FRAME, this.lower);
+      }
+    };
+
+    private spawnNextPlatform = (_event: f.EventPhysics) => {
+      if (_event.cmpRigidbody.physicsType != 1 && _event.cmpRigidbody.getContainer().name === "Avatar") {
+        let nextPlatform: f.Node = new f.Node("platform" + this.index + 1);
+        this.node.getParent().addChild(nextPlatform);
+        nextPlatform.addComponent(new ComponentScriptPlatform(this.index + 1, false, this.timeLoss));
+        let trigger: f.ComponentRigidbody = this.triggerNode.getComponent(f.ComponentRigidbody);
+        trigger.removeEventListener(f.EVENT_PHYSICS.COLLISION_ENTER, this.spawnNextPlatform);
+        this.triggerNode.removeComponent(trigger);
+        game.solvedPlatforms++;
+        uiLive.score = game.solvedPlatforms;
+        if (this.trapNode) {
+          this.trapNode.activate(false);
+          this.trapNode.getChildren().forEach((child) => {
+            if (child.getComponent(f.ComponentRigidbody)) child.removeComponent(child.getComponent(f.ComponentRigidbody));
+          });
+        }
       }
     };
   }

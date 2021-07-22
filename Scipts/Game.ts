@@ -57,13 +57,11 @@ namespace JumpandHook {
       let resource: f.SerializableResource = f.Project.resources[Game.graphId];
       this.root = <f.Graph>resource;
       let volume: HTMLInputElement = <HTMLInputElement>document.getElementById("volume");
-      console.log(volume);
 
       this.viewport = new f.Viewport();
       this.initPhysics();
       this.createAvatar();
       this.createRigidbodies();
-      this.setStartingPlatform();
       this.showScores();
       this.viewport.initialize("Viewport", this.root, this.cmpCamera, this.canvas);
       f.AudioManager.default.listenTo(this.root);
@@ -95,6 +93,7 @@ namespace JumpandHook {
 
     private start = () => {
       this.canvas.requestPointerLock();
+      this.setStartingPlatform();
       this.toggleMenu();
       this.state = GAMESTATE.RUNNING;
       f.Loop.addEventListener(f.EVENT.LOOP_FRAME, this.update);
@@ -195,7 +194,9 @@ namespace JumpandHook {
     }
 
     private pointerLockChange(_event: Event): void {
-      if (this.isLocked) this.state = GAMESTATE.MENU;
+      if (this.isLocked) {
+        // this.state = GAMESTATE.MENU;
+      }
       this.isLocked = !this.isLocked;
     }
 
