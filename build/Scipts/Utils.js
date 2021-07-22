@@ -6,7 +6,7 @@ var JumpandHook;
             if (location.protocol == "http:")
                 return "";
             else
-                return "JumpAndHook/";
+                return "./JumpAndHook/";
         }
     }
     JumpandHook.Utils = Utils;
