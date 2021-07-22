@@ -1,7 +1,7 @@
 namespace JumpandHook {
   import f = FudgeCore;
   export class Avatar extends f.Node {
-    private static audioBG: f.Audio = new f.Audio("../../JumpAndHook/Assets/Sound/soundtrack.mp3");
+    private static audioBG: f.Audio = new f.Audio("../../Assets/Sound/soundtrack.mp3");
     public cmpCamera: f.ComponentCamera;
     public cmpRigid: f.ComponentRigidbody;
     public camNode: f.Node = new f.Node("Cam");

@@ -96,7 +96,7 @@ namespace JumpandHook {
       }
 
       trapArray.forEach((trap) => {
-        trap.addComponent(new CmpScriptTrap(this.mesh, this.material));
+        trap.addComponent(new ComponentScriptTrap(this.mesh, this.material));
       });
     }
 

@@ -51,7 +51,7 @@ namespace JumpandHook {
     }
 
     private async init(): Promise<void> {
-      let response: Response = await fetch("Config.json");
+      let response: Response = await fetch("../config.json");
       this.config = await response.json();
       await f.Project.loadResourcesFromHTML();
       let resource: f.SerializableResource = f.Project.resources[Game.graphId];
