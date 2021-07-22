@@ -6,6 +6,7 @@ namespace JumpandHook {
     public cmpRigid: f.ComponentRigidbody;
     public camNode: f.Node = new f.Node("Cam");
     public hook: Hook;
+    private pullForce: number;
     private defaultSpeed: number;
     private movementSpeed: number;
     private isGrounded: boolean = false;
@@ -16,13 +17,14 @@ namespace JumpandHook {
     private propRigid: f.ComponentRigidbody = null;
     private cmpAudio: f.ComponentAudio;
 
-    constructor(_cmpCamera: f.ComponentCamera, _speed: number, _force: number, _weight: number, _disableMusic: boolean) {
+    constructor(_cmpCamera: f.ComponentCamera, _speed: number, _force: number, _pullForce: number, _weight: number, _disableMusic: boolean) {
       super("Avatar");
       //Properties
       this.weight = _weight;
       this.defaultSpeed = _speed;
       this.movementSpeed = _speed;
       this.jumpForce = _force;
+      this.pullForce = _pullForce;
       //Transform
       let cmpTransform: f.ComponentTransform = new f.ComponentTransform();
       cmpTransform.mtxLocal.scale(new f.Vector3(1, 1, 1));
@@ -91,7 +93,7 @@ namespace JumpandHook {
         if (hitInfo.hit) {
           switch (hitInfo.rigidbodyComponent.physicsType) {
             case f.PHYSICS_TYPE.STATIC:
-              this.cmpRigid.applyImpulseAtPoint(f.Vector3.SCALE(direction, 1000));
+              this.cmpRigid.applyImpulseAtPoint(f.Vector3.SCALE(direction, this.pullForce));
               break;
             case f.PHYSICS_TYPE.DYNAMIC:
               hitInfo.rigidbodyComponent.applyImpulseAtPoint(f.Vector3.SCALE(direction, -100));

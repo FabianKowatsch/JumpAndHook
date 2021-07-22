@@ -16,7 +16,7 @@ var JumpandHook;
     class MenuUi extends f.Mutable {
         constructor() {
             super(...arguments);
-            this.volume = 20;
+            this.volume = 10;
         }
         reduceMutator(_mutator) {
             return;
@@ -34,7 +34,6 @@ var JumpandHook;
         static updateVolume() {
             let ui = document.getElementById("options");
             fUi.Controller.updateMutator(ui, JumpandHook.uiMenu);
-            console.log(JumpandHook.uiMenu.volume);
         }
     }
     JumpandHook.UI = UI;

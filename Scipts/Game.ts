@@ -3,6 +3,7 @@ namespace JumpandHook {
   type Config = {
     speed: number;
     jumpforce: number;
+    pullForce: number;
     weight: number;
     timeReduction: number;
     debug: boolean;
@@ -114,7 +115,7 @@ namespace JumpandHook {
           f.Loop.removeEventListener(f.EVENT.LOOP_FRAME, this.update);
           f.Loop.stop();
           this.setScores();
-          window.location.reload();
+          //window.location.reload();
           break;
         default:
           window.location.reload();
@@ -208,7 +209,7 @@ namespace JumpandHook {
 
     private createAvatar(): void {
       this.cmpCamera = new f.ComponentCamera();
-      this.avatar = new Avatar(this.cmpCamera, this.config.speed, this.config.jumpforce, this.config.weight, this.config.disableMusic);
+      this.avatar = new Avatar(this.cmpCamera, this.config.speed, this.config.jumpforce, this.config.pullForce, this.config.weight, this.config.disableMusic);
       this.root.appendChild(this.avatar);
       this.avatar.setVolume(uiMenu.volume);
     }

@@ -4,7 +4,7 @@ var JumpandHook;
     var f = FudgeCore;
     let Avatar = /** @class */ (() => {
         class Avatar extends f.Node {
-            constructor(_cmpCamera, _speed, _force, _weight, _disableMusic) {
+            constructor(_cmpCamera, _speed, _force, _pullForce, _weight, _disableMusic) {
                 super("Avatar");
                 this.camNode = new f.Node("Cam");
                 this.isGrounded = false;
@@ -16,6 +16,7 @@ var JumpandHook;
                 this.defaultSpeed = _speed;
                 this.movementSpeed = _speed;
                 this.jumpForce = _force;
+                this.pullForce = _pullForce;
                 //Transform
                 let cmpTransform = new f.ComponentTransform();
                 cmpTransform.mtxLocal.scale(new f.Vector3(1, 1, 1));
@@ -83,7 +84,7 @@ var JumpandHook;
                     if (hitInfo.hit) {
                         switch (hitInfo.rigidbodyComponent.physicsType) {
                             case f.PHYSICS_TYPE.STATIC:
-                                this.cmpRigid.applyImpulseAtPoint(f.Vector3.SCALE(direction, 1000));
+                                this.cmpRigid.applyImpulseAtPoint(f.Vector3.SCALE(direction, this.pullForce));
                                 break;
                             case f.PHYSICS_TYPE.DYNAMIC:
                                 hitInfo.rigidbodyComponent.applyImpulseAtPoint(f.Vector3.SCALE(direction, -100));

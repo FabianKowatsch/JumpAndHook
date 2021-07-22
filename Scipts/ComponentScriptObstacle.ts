@@ -24,7 +24,7 @@ namespace JumpandHook {
       this.trap = new f.Node("trap");
       let cmpTransform: f.ComponentTransform = new f.ComponentTransform();
       this.trap.addComponent(cmpTransform);
-      this.trap.mtxLocal.scale(new f.Vector3(10, 4, 0.2));
+      this.trap.mtxLocal.scale(new f.Vector3(8, 4, 0.2));
       this.trap.mtxLocal.translate(new f.Vector3(0, 0.5, 0));
       this.trap.addComponent(new f.ComponentMaterial(ComponentScriptObstacle.material));
       this.trap.addComponent(new f.ComponentMesh(ComponentScriptObstacle.mesh));

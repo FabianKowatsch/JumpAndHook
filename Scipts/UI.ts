@@ -8,7 +8,7 @@ namespace JumpandHook {
     }
   }
   export class MenuUi extends f.Mutable {
-    public volume: number = 20;
+    public volume: number = 10;
     protected reduceMutator(_mutator: f.Mutator): void {
       return;
     }
@@ -25,7 +25,6 @@ namespace JumpandHook {
     public static updateVolume(): void {
       let ui: HTMLDivElement = <HTMLDivElement>document.getElementById("options");
       fUi.Controller.updateMutator(ui, uiMenu);
-      console.log(uiMenu.volume);
     }
   }
 }

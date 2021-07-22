@@ -39,7 +39,7 @@ var JumpandHook;
                             f.Loop.removeEventListener("loopFrame" /* LOOP_FRAME */, this.update);
                             f.Loop.stop();
                             this.setScores();
-                            window.location.reload();
+                            //window.location.reload();
                             break;
                         default:
                             window.location.reload();
@@ -183,7 +183,7 @@ var JumpandHook;
             }
             createAvatar() {
                 this.cmpCamera = new f.ComponentCamera();
-                this.avatar = new JumpandHook.Avatar(this.cmpCamera, this.config.speed, this.config.jumpforce, this.config.weight, this.config.disableMusic);
+                this.avatar = new JumpandHook.Avatar(this.cmpCamera, this.config.speed, this.config.jumpforce, this.config.pullForce, this.config.weight, this.config.disableMusic);
                 this.root.appendChild(this.avatar);
                 this.avatar.setVolume(JumpandHook.uiMenu.volume);
             }

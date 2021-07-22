@@ -22,7 +22,7 @@ var JumpandHook;
                         cmpRigid.restitution = 0;
                         cmpRigid.friction = 10;
                         this.node.addComponent(cmpRigid);
-                        this.addTraps();
+                        this.addObstacleOrTrap();
                     }
                     this.addNextTrigger();
                     this.addDeathTrigger();
@@ -62,13 +62,6 @@ var JumpandHook;
                         this.triggerNode.removeComponent(trigger);
                         JumpandHook.game.solvedPlatforms++;
                         JumpandHook.uiLive.score = JumpandHook.game.solvedPlatforms;
-                        if (this.trapNode) {
-                            this.trapNode.activate(false);
-                            this.trapNode.getChildren().forEach((child) => {
-                                if (child.getComponent(f.ComponentRigidbody))
-                                    child.removeComponent(child.getComponent(f.ComponentRigidbody));
-                            });
-                        }
                     }
                 };
                 this.mesh = f.Project.resources[ComponentScriptPlatform.meshId];
@@ -97,8 +90,8 @@ var JumpandHook;
                 let cmpRigid = new f.ComponentRigidbody(0, f.PHYSICS_TYPE.STATIC, f.COLLIDER_TYPE.CUBE, f.PHYSICS_GROUP.TRIGGER);
                 this.triggerNode.addComponent(cmpRigid);
                 this.triggerNode.addComponent(new f.ComponentTransform());
-                this.triggerNode.mtxLocal.scale(new f.Vector3(2, 5, 10));
-                this.triggerNode.mtxLocal.translate(new f.Vector3(3.5, 0, 0));
+                this.triggerNode.mtxLocal.scale(new f.Vector3(4, 4, 10));
+                this.triggerNode.mtxLocal.translate(new f.Vector3(1.5, 0, 0));
                 this.node.appendChild(this.triggerNode);
                 f.Physics.adjustTransforms(this.node.getAncestor(), true);
                 cmpRigid.addEventListener("TriggerEnteredCollision" /* TRIGGER_ENTER */, this.spawnNextPlatform);
@@ -114,14 +107,40 @@ var JumpandHook;
                 f.Physics.adjustTransforms(this.node.getAncestor(), true);
                 cmpRigid.addEventListener("TriggerEnteredCollision" /* TRIGGER_ENTER */, this.setGameOverState);
             }
-            addTraps() {
+            addObstacleOrTrap() {
                 this.trapNode = new f.Node("trap" + this.index);
                 this.node.addChild(this.trapNode);
-                let cmpScriptObstacle = new JumpandHook.ComponentScriptObstacle();
-                this.trapNode.addComponent(cmpScriptObstacle);
+                if (this.index % 10 != 0) {
+                    let randomNumber = Math.round(Math.random() * 4);
+                    switch (randomNumber) {
+                        case 0:
+                            let cmpScriptObstacle = new JumpandHook.ComponentScriptObstacle();
+                            this.trapNode.addComponent(cmpScriptObstacle);
+                            break;
+                        case 1:
+                            let cmpScriptTrap = new JumpandHook.ComponentScriptTrap();
+                            this.trapNode.addComponent(cmpScriptTrap);
+                            break;
+                        case 3:
+                            //let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
+                            // this.trapNode.addComponent(cmpScriptObstacle);
+                            break;
+                        case 4:
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
             sinkPlatform() {
                 f.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.lower);
+                if (this.trapNode) {
+                    this.trapNode.activate(false);
+                    this.trapNode.getChildren().forEach((child) => {
+                        if (child.getComponent(f.ComponentRigidbody))
+                            child.removeComponent(child.getComponent(f.ComponentRigidbody));
+                    });
+                }
             }
         }
         ComponentScriptPlatform.materialId = "Material|2021-04-27T14:36:49.332Z|73063";

@@ -43,7 +43,7 @@ namespace JumpandHook {
         cmpRigid.restitution = 0;
         cmpRigid.friction = 10;
         this.node.addComponent(cmpRigid);
-        this.addTraps();
+        this.addObstacleOrTrap();
       }
       this.addNextTrigger();
 
@@ -73,8 +73,8 @@ namespace JumpandHook {
       let cmpRigid: f.ComponentRigidbody = new f.ComponentRigidbody(0, f.PHYSICS_TYPE.STATIC, f.COLLIDER_TYPE.CUBE, f.PHYSICS_GROUP.TRIGGER);
       this.triggerNode.addComponent(cmpRigid);
       this.triggerNode.addComponent(new f.ComponentTransform());
-      this.triggerNode.mtxLocal.scale(new f.Vector3(2, 5, 10));
-      this.triggerNode.mtxLocal.translate(new f.Vector3(3.5, 0, 0));
+      this.triggerNode.mtxLocal.scale(new f.Vector3(4, 4, 10));
+      this.triggerNode.mtxLocal.translate(new f.Vector3(1.5, 0, 0));
       this.node.appendChild(this.triggerNode);
       f.Physics.adjustTransforms(this.node.getAncestor(), true);
       cmpRigid.addEventListener(f.EVENT_PHYSICS.TRIGGER_ENTER, this.spawnNextPlatform);
@@ -92,11 +92,32 @@ namespace JumpandHook {
       cmpRigid.addEventListener(f.EVENT_PHYSICS.TRIGGER_ENTER, this.setGameOverState);
     }
 
-    private addTraps(): void {
+    private addObstacleOrTrap(): void {
       this.trapNode = new f.Node("trap" + this.index);
       this.node.addChild(this.trapNode);
-      let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
-      this.trapNode.addComponent(cmpScriptObstacle);
+      if (this.index % 10 != 0) {
+        let randomNumber: number = Math.round(Math.random() * 4);
+
+        switch (randomNumber) {
+          case 0:
+            let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
+            this.trapNode.addComponent(cmpScriptObstacle);
+
+            break;
+          case 1:
+            let cmpScriptTrap: ComponentScriptTrap = new ComponentScriptTrap();
+            this.trapNode.addComponent(cmpScriptTrap);
+            break;
+          case 3:
+            //let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
+            // this.trapNode.addComponent(cmpScriptObstacle);
+            break;
+          case 4:
+            break;
+          default:
+            break;
+        }
+      }
     }
 
     private setGameOverState = (_event: f.EventPhysics) => {
@@ -113,6 +134,12 @@ namespace JumpandHook {
 
     private sinkPlatform(): void {
       f.Loop.addEventListener(f.EVENT.LOOP_FRAME, this.lower);
+      if (this.trapNode) {
+        this.trapNode.activate(false);
+        this.trapNode.getChildren().forEach((child) => {
+          if (child.getComponent(f.ComponentRigidbody)) child.removeComponent(child.getComponent(f.ComponentRigidbody));
+        });
+      }
     }
     private lower = (): void => {
       let rigid: f.ComponentRigidbody = this.node.getComponent(f.ComponentRigidbody);
@@ -132,12 +159,6 @@ namespace JumpandHook {
         this.triggerNode.removeComponent(trigger);
         game.solvedPlatforms++;
         uiLive.score = game.solvedPlatforms;
-        if (this.trapNode) {
-          this.trapNode.activate(false);
-          this.trapNode.getChildren().forEach((child) => {
-            if (child.getComponent(f.ComponentRigidbody)) child.removeComponent(child.getComponent(f.ComponentRigidbody));
-          });
-        }
       }
     };
   }
