@@ -24,7 +24,9 @@ Renne, springe und hangle dich zur nächsten Plattform. Benutze den Greifhaken, 
 - Leertaste: Springen
 - Shift: Sprinten
 
-Den Greifhaken während des Sprintens im Sprung zu verwenden vereinfacht das erreichen der nächsten Plattform. Der Greifhaken trifft nur Objekte in der Mitte des Bildschirms in einem bestimmtem Radius.
+Den Greifhaken während des Sprintens im Sprung zu verwenden vereinfacht das erreichen der nächsten Plattform.
+Der Greifhaken trifft nur Objekte in der Mitte des Bildschirms in einem bestimmtem Radius.
+Versuche den Fallen auszuweichen und beim Minispiel den Ball ins Tor zu befördern.
 
 ## Checkliste für Leistungsnachweis
 
