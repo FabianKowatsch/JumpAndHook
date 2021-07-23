@@ -2,11 +2,16 @@
 var JumpandHook;
 (function (JumpandHook) {
     var f = FudgeCore;
+    let EVENT_PLATFORM;
+    (function (EVENT_PLATFORM) {
+        EVENT_PLATFORM["BALL"] = "ballEnter";
+    })(EVENT_PLATFORM = JumpandHook.EVENT_PLATFORM || (JumpandHook.EVENT_PLATFORM = {}));
     let ComponentScriptPlatform = /** @class */ (() => {
         class ComponentScriptPlatform extends f.ComponentScript {
             constructor(_index, _isFirst, _timeLoss) {
                 super();
                 this.name = "CmpScriptPlatform";
+                this.allowNextPlatform = true;
                 this.hndAdd = (_event) => {
                     this.node = this.getContainer();
                     if (!this.isFirst) {
@@ -27,7 +32,7 @@ var JumpandHook;
                     this.addNextTrigger();
                     this.addDeathTrigger();
                     f.Physics.adjustTransforms(this.node.getParent(), true);
-                    let timeout = 10000 - this.index * this.timeLoss;
+                    let timeout = 1000000 - this.index * this.timeLoss;
                     setTimeout(() => {
                         this.sinkPlatform();
                         // tslint:disable-next-line: align
@@ -53,7 +58,7 @@ var JumpandHook;
                     }
                 };
                 this.spawnNextPlatform = (_event) => {
-                    if (_event.cmpRigidbody.physicsType != 1 && _event.cmpRigidbody.getContainer().name === "Avatar") {
+                    if (_event.cmpRigidbody.physicsType != 1 && _event.cmpRigidbody.getContainer().name === "Avatar" && this.allowNextPlatform) {
                         let nextPlatform = new f.Node("platform" + this.index + 1);
                         this.node.getParent().addChild(nextPlatform);
                         nextPlatform.addComponent(new ComponentScriptPlatform(this.index + 1, false, this.timeLoss));
@@ -111,25 +116,31 @@ var JumpandHook;
                 this.trapNode = new f.Node("trap" + this.index);
                 this.node.addChild(this.trapNode);
                 if (this.index % 10 != 0) {
-                    let randomNumber = Math.round(Math.random() * 4);
-                    switch (randomNumber) {
-                        case 0:
-                            let cmpScriptObstacle = new JumpandHook.ComponentScriptObstacle();
-                            this.trapNode.addComponent(cmpScriptObstacle);
-                            break;
-                        case 1:
-                            let cmpScriptTrap = new JumpandHook.ComponentScriptTrap();
-                            this.trapNode.addComponent(cmpScriptTrap);
-                            break;
-                        case 3:
-                            //let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
-                            // this.trapNode.addComponent(cmpScriptObstacle);
-                            break;
-                        case 4:
-                            break;
-                        default:
-                            break;
-                    }
+                    // let randomNumber: number = Math.round(Math.random() * 4);
+                    // switch (randomNumber) {
+                    //   case 0:
+                    //     let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
+                    //     this.trapNode.addComponent(cmpScriptObstacle);
+                    //     break;
+                    //   case 1:
+                    //     let cmpScriptTrap: ComponentScriptTrap = new ComponentScriptTrap();
+                    //     this.trapNode.addComponent(cmpScriptTrap);
+                    //     break;
+                    //   case 3:
+                    //     //let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
+                    //     // this.trapNode.addComponent(cmpScriptObstacle);
+                    //     break;
+                    //   case 4:
+                    //     break;
+                    //   default:
+                    //     break;
+                    // }
+                    this.allowNextPlatform = false;
+                    let cmpScriptObstacle = new JumpandHook.ComponentScriptBallGame();
+                    this.trapNode.addComponent(cmpScriptObstacle);
+                    cmpScriptObstacle.addEventListener(EVENT_PLATFORM.BALL, () => {
+                        this.allowNextPlatform = true;
+                    });
                 }
             }
             sinkPlatform() {

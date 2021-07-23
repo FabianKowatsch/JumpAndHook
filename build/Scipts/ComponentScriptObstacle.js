@@ -13,7 +13,7 @@ var JumpandHook;
                     this.addObstacle();
                 };
                 this.addObstacle = () => {
-                    this.trap = new f.Node("trap");
+                    this.trap = new f.Node("obstacle");
                     let cmpTransform = new f.ComponentTransform();
                     this.trap.addComponent(cmpTransform);
                     this.trap.mtxLocal.scale(new f.Vector3(8, 4, 0.2));

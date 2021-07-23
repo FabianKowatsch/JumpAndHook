@@ -6,7 +6,7 @@ var JumpandHook;
         class ComponentScriptTrap extends f.ComponentScript {
             constructor() {
                 super();
-                this.name = "CmpScriptObstacle";
+                this.name = "CmpScriptTrap";
                 this.hndComponentAdd = () => {
                     this.node = this.getContainer();
                     this.node.addComponent(new f.ComponentTransform());
@@ -48,7 +48,7 @@ var JumpandHook;
             }
         }
         ComponentScriptTrap.mesh = new f.MeshCube("MeshTrap");
-        ComponentScriptTrap.material = new f.Material("MatTrap", f.ShaderFlat, new f.CoatColored(new f.Color(1, 1, 0, 1)));
+        ComponentScriptTrap.material = new f.Material("MatTrap", f.ShaderFlat, new f.CoatColored(new f.Color(1, 0, 0, 1)));
         return ComponentScriptTrap;
     })();
     JumpandHook.ComponentScriptTrap = ComponentScriptTrap;

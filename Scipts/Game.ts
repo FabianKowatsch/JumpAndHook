@@ -115,7 +115,7 @@ namespace JumpandHook {
           f.Loop.removeEventListener(f.EVENT.LOOP_FRAME, this.update);
           f.Loop.stop();
           this.setScores();
-          //window.location.reload();
+          window.location.reload();
           break;
         default:
           window.location.reload();

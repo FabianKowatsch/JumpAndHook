@@ -1,5 +1,9 @@
 namespace JumpandHook {
   import f = FudgeCore;
+
+  export enum EVENT_PLATFORM {
+    BALL = "ballEnter"
+  }
   export class ComponentScriptPlatform extends f.ComponentScript {
     private static materialId: string = "Material|2021-04-27T14:36:49.332Z|73063";
     private static meshId: string = "MeshCube|2021-04-27T14:35:44.543Z|88040";
@@ -14,6 +18,7 @@ namespace JumpandHook {
     private trapNode: f.Node;
     private deathNode: f.Node;
     private isFirst: boolean;
+    private allowNextPlatform: boolean = true;
     constructor(_index: number, _isFirst: boolean, _timeLoss: number) {
       super();
       this.mesh = <f.Mesh>f.Project.resources[ComponentScriptPlatform.meshId];
@@ -49,7 +54,7 @@ namespace JumpandHook {
 
       this.addDeathTrigger();
       f.Physics.adjustTransforms(this.node.getParent(), true);
-      let timeout: number = 10000 - this.index * this.timeLoss;
+      let timeout: number = 1000000 - this.index * this.timeLoss;
       setTimeout(() => {
         this.sinkPlatform();
         // tslint:disable-next-line: align
@@ -96,27 +101,33 @@ namespace JumpandHook {
       this.trapNode = new f.Node("trap" + this.index);
       this.node.addChild(this.trapNode);
       if (this.index % 10 != 0) {
-        let randomNumber: number = Math.round(Math.random() * 4);
+        // let randomNumber: number = Math.round(Math.random() * 4);
 
-        switch (randomNumber) {
-          case 0:
-            let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
-            this.trapNode.addComponent(cmpScriptObstacle);
+        // switch (randomNumber) {
+        //   case 0:
+        //     let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
+        //     this.trapNode.addComponent(cmpScriptObstacle);
 
-            break;
-          case 1:
-            let cmpScriptTrap: ComponentScriptTrap = new ComponentScriptTrap();
-            this.trapNode.addComponent(cmpScriptTrap);
-            break;
-          case 3:
-            //let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
-            // this.trapNode.addComponent(cmpScriptObstacle);
-            break;
-          case 4:
-            break;
-          default:
-            break;
-        }
+        //     break;
+        //   case 1:
+        //     let cmpScriptTrap: ComponentScriptTrap = new ComponentScriptTrap();
+        //     this.trapNode.addComponent(cmpScriptTrap);
+        //     break;
+        //   case 3:
+        //     //let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
+        //     // this.trapNode.addComponent(cmpScriptObstacle);
+        //     break;
+        //   case 4:
+        //     break;
+        //   default:
+        //     break;
+        // }
+        this.allowNextPlatform = false;
+        let cmpScriptObstacle: ComponentScriptBallGame = new ComponentScriptBallGame();
+        this.trapNode.addComponent(cmpScriptObstacle);
+        cmpScriptObstacle.addEventListener(EVENT_PLATFORM.BALL, () => {
+          this.allowNextPlatform = true;
+        });
       }
     }
 
@@ -150,7 +161,7 @@ namespace JumpandHook {
     };
 
     private spawnNextPlatform = (_event: f.EventPhysics) => {
-      if (_event.cmpRigidbody.physicsType != 1 && _event.cmpRigidbody.getContainer().name === "Avatar") {
+      if (_event.cmpRigidbody.physicsType != 1 && _event.cmpRigidbody.getContainer().name === "Avatar" && this.allowNextPlatform) {
         let nextPlatform: f.Node = new f.Node("platform" + this.index + 1);
         this.node.getParent().addChild(nextPlatform);
         nextPlatform.addComponent(new ComponentScriptPlatform(this.index + 1, false, this.timeLoss));

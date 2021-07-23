@@ -60,6 +60,7 @@ namespace JumpandHook {
     }
     public setVolume(_volume: number): void {
       this.cmpAudio.volume = 1 * (_volume / 100);
+      this.hook.setVolume(1 * (_volume / 100));
     }
 
     public move(_forward: number, _sideward: number): void {

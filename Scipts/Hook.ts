@@ -64,6 +64,10 @@ namespace JumpandHook {
       this.addChild(rope);
       rope.addComponent(cmpScript);
     }
+    public setVolume(_volume: number): void {
+      this.cmpAudioPull.volume = _volume;
+      this.cmpAudioPush.volume = _volume;
+    }
     public playPushSound(): void {
       this.cmpAudioPush.play(true);
     }

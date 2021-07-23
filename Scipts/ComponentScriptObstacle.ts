@@ -5,7 +5,6 @@ namespace JumpandHook {
     private static mesh: f.Mesh = new f.MeshCube("ObstacleMesh");
     private static material: f.Material = new f.Material("MatObstacle", f.ShaderFlat, new f.CoatColored(new f.Color(1, 1, 0, 1)));
     public name: string = "CmpScriptObstacle";
-    public triggerRigid: f.ComponentRigidbody;
     private node: f.Node;
     private trap: f.Node;
     private trapRigid: f.ComponentRigidbody;
@@ -21,7 +20,7 @@ namespace JumpandHook {
     };
 
     private addObstacle = (): void => {
-      this.trap = new f.Node("trap");
+      this.trap = new f.Node("obstacle");
       let cmpTransform: f.ComponentTransform = new f.ComponentTransform();
       this.trap.addComponent(cmpTransform);
       this.trap.mtxLocal.scale(new f.Vector3(8, 4, 0.2));

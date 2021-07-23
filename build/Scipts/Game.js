@@ -39,7 +39,7 @@ var JumpandHook;
                             f.Loop.removeEventListener("loopFrame" /* LOOP_FRAME */, this.update);
                             f.Loop.stop();
                             this.setScores();
-                            //window.location.reload();
+                            window.location.reload();
                             break;
                         default:
                             window.location.reload();

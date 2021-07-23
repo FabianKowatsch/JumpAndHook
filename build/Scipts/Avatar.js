@@ -51,6 +51,7 @@ var JumpandHook;
             }
             setVolume(_volume) {
                 this.cmpAudio.volume = 1 * (_volume / 100);
+                this.hook.setVolume(1 * (_volume / 100));
             }
             move(_forward, _sideward) {
                 let playerForward = this.camNode.mtxLocal.getX();

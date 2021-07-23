@@ -56,6 +56,10 @@ var JumpandHook;
                 this.addChild(rope);
                 rope.addComponent(cmpScript);
             }
+            setVolume(_volume) {
+                this.cmpAudioPull.volume = _volume;
+                this.cmpAudioPush.volume = _volume;
+            }
             playPushSound() {
                 this.cmpAudioPush.play(true);
             }

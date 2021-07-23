@@ -3,9 +3,8 @@ namespace JumpandHook {
 
   export class ComponentScriptTrap extends f.ComponentScript {
     private static mesh: f.MeshCube = new f.MeshCube("MeshTrap");
-    private static material: f.Material = new f.Material("MatTrap", f.ShaderFlat, new f.CoatColored(new f.Color(1, 1, 0, 1)));
-    public name: string = "CmpScriptObstacle";
-    public triggerRigid: f.ComponentRigidbody;
+    private static material: f.Material = new f.Material("MatTrap", f.ShaderFlat, new f.CoatColored(new f.Color(1, 0, 0, 1)));
+    public name: string = "CmpScriptTrap";
     private node: f.Node;
     private trap: f.Node;
     private trapRigid: f.ComponentRigidbody;
