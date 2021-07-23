@@ -17,7 +17,8 @@ var JumpandHook;
     class MenuUi extends f.Mutable {
         constructor() {
             super(...arguments);
-            this.volume = 10;
+            this.musicVolume = 10;
+            this.effectVolume = 10;
         }
         reduceMutator(_mutator) {
             return;

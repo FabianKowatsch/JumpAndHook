@@ -9,7 +9,8 @@ namespace JumpandHook {
     }
   }
   export class MenuUi extends f.Mutable {
-    public volume: number = 10;
+    public musicVolume: number = 10;
+    public effectVolume: number = 10;
     protected reduceMutator(_mutator: f.Mutator): void {
       return;
     }

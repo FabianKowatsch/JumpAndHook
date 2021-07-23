@@ -40,7 +40,7 @@ var JumpandHook;
                     middle.addComponent(this.cmpAudio);
                     this.cmpAudio.setPanner(f.AUDIO_PANNER.CONE_OUTER_ANGLE, 360);
                     this.cmpAudio.setPanner(f.AUDIO_PANNER.CONE_INNER_ANGLE, 360);
-                    this.cmpAudio.volume = 1 * (JumpandHook.uiMenu.volume / 100);
+                    this.cmpAudio.volume = 1 * (JumpandHook.uiMenu.effectVolume / 100);
                     //Ball
                     let ball = new f.Node("Ball");
                     ball.addComponent(new f.ComponentTransform());

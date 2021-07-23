@@ -59,10 +59,12 @@ var JumpandHook;
                 this.cmpAudioWind.setPanner(f.AUDIO_PANNER.CONE_INNER_ANGLE, 360);
                 this.camNode.addChild(windNode);
             }
-            setVolume(_volume) {
+            setEffectVolume(_volumeEffects) {
+                this.hook.setVolume(1 * (_volumeEffects / 100));
+                this.cmpAudioWind.volume = 1 * (_volumeEffects / 500);
+            }
+            setMusicVolume(_volume) {
                 this.cmpAudio.volume = 1 * (_volume / 100);
-                this.hook.setVolume(1 * (_volume / 100));
-                this.cmpAudioWind.volume = 1 * (_volume / 500);
             }
             move(_forward, _sideward) {
                 let playerForward = this.camNode.mtxLocal.getX();

@@ -70,10 +70,12 @@ namespace JumpandHook {
       this.cmpAudioWind.setPanner(f.AUDIO_PANNER.CONE_INNER_ANGLE, 360);
       this.camNode.addChild(windNode);
     }
-    public setVolume(_volume: number): void {
+    public setEffectVolume(_volumeEffects: number): void {
+      this.hook.setVolume(1 * (_volumeEffects / 100));
+      this.cmpAudioWind.volume = 1 * (_volumeEffects / 500);
+    }
+    public setMusicVolume(_volume: number): void {
       this.cmpAudio.volume = 1 * (_volume / 100);
-      this.hook.setVolume(1 * (_volume / 100));
-      this.cmpAudioWind.volume = 1 * (_volume / 500);
     }
 
     public move(_forward: number, _sideward: number): void {

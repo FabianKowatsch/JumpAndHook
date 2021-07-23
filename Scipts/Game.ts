@@ -58,8 +58,8 @@ namespace JumpandHook {
       await f.Project.loadResourcesFromHTML();
       let resource: f.SerializableResource = f.Project.resources[Game.graphId];
       this.root = <f.Graph>resource;
-      let volume: HTMLInputElement = <HTMLInputElement>document.getElementById("volume");
-
+      let effectVolume: HTMLInputElement = <HTMLInputElement>document.getElementById("effectVolume");
+      let musicVolume: HTMLInputElement = <HTMLInputElement>document.getElementById("musicVolume");
       this.viewport = new f.Viewport();
       this.initPhysics();
       this.createAvatar();
@@ -77,9 +77,13 @@ namespace JumpandHook {
       document.addEventListener("mousedown", this.onPointerDown.bind(this));
       document.addEventListener("pointerlockchange", this.pointerLockChange.bind(this));
       this.startButton.addEventListener("click", this.start);
-      volume.addEventListener("input", () => {
+      effectVolume.addEventListener("input", () => {
         UI.updateVolume();
-        this.avatar.setVolume(uiMenu.volume);
+        this.avatar.setEffectVolume(uiMenu.effectVolume);
+      });
+      musicVolume.addEventListener("input", () => {
+        UI.updateVolume();
+        this.avatar.setMusicVolume(uiMenu.musicVolume);
       });
       UI.updateLive();
     }
@@ -216,7 +220,8 @@ namespace JumpandHook {
       this.cmpCamera = new f.ComponentCamera();
       this.avatar = new Avatar(this.cmpCamera, this.config.speed, this.config.jumpforce, this.config.pullForce, this.config.weight, this.config.disableMusic);
       this.root.appendChild(this.avatar);
-      this.avatar.setVolume(uiMenu.volume);
+      this.avatar.setEffectVolume(uiMenu.effectVolume);
+      this.avatar.setMusicVolume(uiMenu.musicVolume);
     }
 
     private setStartingPlatform(): void {

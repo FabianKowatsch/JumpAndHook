@@ -72,7 +72,8 @@ var JumpandHook;
                 await f.Project.loadResourcesFromHTML();
                 let resource = f.Project.resources[Game.graphId];
                 this.root = resource;
-                let volume = document.getElementById("volume");
+                let effectVolume = document.getElementById("effectVolume");
+                let musicVolume = document.getElementById("musicVolume");
                 this.viewport = new f.Viewport();
                 this.initPhysics();
                 this.createAvatar();
@@ -89,9 +90,13 @@ var JumpandHook;
                 document.addEventListener("mousedown", this.onPointerDown.bind(this));
                 document.addEventListener("pointerlockchange", this.pointerLockChange.bind(this));
                 this.startButton.addEventListener("click", this.start);
-                volume.addEventListener("input", () => {
+                effectVolume.addEventListener("input", () => {
                     JumpandHook.UI.updateVolume();
-                    this.avatar.setVolume(JumpandHook.uiMenu.volume);
+                    this.avatar.setEffectVolume(JumpandHook.uiMenu.effectVolume);
+                });
+                musicVolume.addEventListener("input", () => {
+                    JumpandHook.UI.updateVolume();
+                    this.avatar.setMusicVolume(JumpandHook.uiMenu.musicVolume);
                 });
                 JumpandHook.UI.updateLive();
             }
@@ -188,7 +193,8 @@ var JumpandHook;
                 this.cmpCamera = new f.ComponentCamera();
                 this.avatar = new JumpandHook.Avatar(this.cmpCamera, this.config.speed, this.config.jumpforce, this.config.pullForce, this.config.weight, this.config.disableMusic);
                 this.root.appendChild(this.avatar);
-                this.avatar.setVolume(JumpandHook.uiMenu.volume);
+                this.avatar.setEffectVolume(JumpandHook.uiMenu.effectVolume);
+                this.avatar.setMusicVolume(JumpandHook.uiMenu.musicVolume);
             }
             setStartingPlatform() {
                 let level = this.root.getChildrenByName("level")[0];
