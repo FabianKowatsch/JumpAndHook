@@ -29,6 +29,7 @@ namespace JumpandHook {
       this.isFirst = _isFirst;
       this.timeLoss = _timeLoss;
       this.timeStart = _timeStart;
+
       this.addEventListener(f.EVENT.COMPONENT_ADD, this.hndAdd);
       setTimeout(() => {
         f.Physics.adjustTransforms(this.node.getParent(), true);
@@ -37,7 +38,6 @@ namespace JumpandHook {
 
     private hndAdd = (_event: f.Eventƒ) => {
       this.node = this.getContainer();
-
       if (!this.isFirst) {
         let transform: f.Matrix4x4 = new f.Matrix4x4();
         transform.translate(new f.Vector3(ComponentScriptPlatform.translationFactor * this.index, Math.random() * 4 - 2, Math.random() * 4 - 2));
