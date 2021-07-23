@@ -1,9 +1,10 @@
 {
   "speed": 5,
-  "jumpforce": 150,
-  "pullForce": 1200,
+  "jumpforce": 140,
+  "pullForce": 1100,
   "weight": 75,
-  "timeReduction": 100,
+  "timeStart": 10000,
+  "timeReduction": 400,
   "debug": false,
-  "disableMusic": true
+  "disableMusic": false
 }

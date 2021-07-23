@@ -20,7 +20,7 @@ var JumpandHook;
                 //Transform
                 let cmpTransform = new f.ComponentTransform();
                 cmpTransform.mtxLocal.scale(new f.Vector3(1, 1, 1));
-                cmpTransform.mtxLocal.translate(new f.Vector3(0, 4, 0));
+                cmpTransform.mtxLocal.translate(new f.Vector3(0, 3, 0));
                 this.addComponent(cmpTransform);
                 //Rigid
                 this.cmpRigid = new f.ComponentRigidbody(this.weight, f.PHYSICS_TYPE.DYNAMIC, f.COLLIDER_TYPE.CAPSULE, f.PHYSICS_GROUP.DEFAULT);
@@ -39,19 +39,30 @@ var JumpandHook;
                 this.camNode.addComponent(this.cmpCamera);
                 this.camNode.mtxLocal.translateY(1);
                 //audio
-                this.camNode.addComponent(new f.ComponentAudioListener());
+                this.cmpListener = new f.ComponentAudioListener();
+                this.camNode.addComponent(this.cmpListener);
                 //Gun
                 this.hook = new JumpandHook.Hook();
                 this.camNode.addChild(this.hook);
+                //Music
                 this.cmpAudio = new f.ComponentAudio(Avatar.audioBG, true, !_disableMusic);
                 this.cmpAudio.volume = 1;
                 this.camNode.addComponent(this.cmpAudio);
                 this.cmpAudio.setPanner(f.AUDIO_PANNER.CONE_OUTER_ANGLE, 360);
                 this.cmpAudio.setPanner(f.AUDIO_PANNER.CONE_INNER_ANGLE, 360);
+                //Wind
+                let windNode = new f.Node("windNode");
+                this.cmpAudioWind = new f.ComponentAudio(Avatar.audioWind, true, true);
+                this.cmpAudioWind.volume = 1;
+                windNode.addComponent(this.cmpAudioWind);
+                this.cmpAudioWind.setPanner(f.AUDIO_PANNER.CONE_OUTER_ANGLE, 360);
+                this.cmpAudioWind.setPanner(f.AUDIO_PANNER.CONE_INNER_ANGLE, 360);
+                this.camNode.addChild(windNode);
             }
             setVolume(_volume) {
                 this.cmpAudio.volume = 1 * (_volume / 100);
                 this.hook.setVolume(1 * (_volume / 100));
+                this.cmpAudioWind.volume = 1 * (_volume / 500);
             }
             move(_forward, _sideward) {
                 let playerForward = this.camNode.mtxLocal.getX();
@@ -182,6 +193,7 @@ var JumpandHook;
             }
         }
         Avatar.audioBG = new f.Audio(JumpandHook.Utils.path() + "../Assets/Sound/soundtrack.mp3");
+        Avatar.audioWind = new f.Audio(JumpandHook.Utils.path() + "../Assets/Sound/wind.mp3");
         return Avatar;
     })();
     JumpandHook.Avatar = Avatar;

@@ -168,66 +168,6 @@
               }
             ]
           }
-        },
-        {
-          "ƒ.Node": {
-            "name": "ball",
-            "components": {
-              "ComponentMesh": [
-                {
-                  "ƒ.ComponentMesh": {
-                    "idMesh": "MeshSphere|2021-04-27T15:14:08.520Z|15058",
-                    "pivot": {
-                      "translation": "[0, 0, 0]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
-                    },
-                    "Component": {
-                      "active": true
-                    }
-                  }
-                }
-              ],
-              "ComponentMaterial": [
-                {
-                  "ƒ.ComponentMaterial": {
-                    "sortForAlpha": false,
-                    "clrPrimary": "[1, 1, 1, 1]",
-                    "clrSecondary": "[1, 1, 1, 1]",
-                    "pivot": {
-                      "translation": "[0, 0]",
-                      "rotation": 0,
-                      "scaling": "[1, 1]"
-                    },
-                    "Component": {
-                      "active": true
-                    },
-                    "idMaterial": "Material|2021-04-27T14:36:49.332Z|73063"
-                  }
-                }
-              ],
-              "ComponentTransform": [
-                {
-                  "ƒ.ComponentTransform": {
-                    "local": {
-                      "translation": "[4, 1.5000001192092896, 0]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
-                    },
-                    "world": {
-                      "translation": "[4, 1.5000001192092896, 0]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
-                    },
-                    "Component": {
-                      "active": true
-                    }
-                  }
-                }
-              ]
-            },
-            "children": []
-          }
         }
       ],
       "idResource": "Graph|2021-04-27T14:37:53.620Z|93013",
@@ -331,37 +271,6 @@
                       "rotation": "[0, 0, 0]",
                       "scaling": "[2, 2, 2]"
                     },
-                    "Component": {
-                      "active": true
-                    }
-                  }
-                }
-              ],
-              "ComponentRigidbody": [
-                {
-                  "ƒ.ComponentRigidbody": {
-                    "pivot": {
-                      "translation": "[0, 0, 0]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
-                    },
-                    "id": 0,
-                    "physicsType": 1,
-                    "mass": 0,
-                    "colliderType": 0,
-                    "linearDamping": 0.1,
-                    "angularDamping": 0.1,
-                    "collisionGroup": 1,
-                    "rotationInfluence": {
-                      "data": {
-                        "0": 1,
-                        "1": 1,
-                        "2": 1
-                      }
-                    },
-                    "gravityScale": 1,
-                    "friction": 0.2,
-                    "restitution": 0.2,
                     "Component": {
                       "active": true
                     }

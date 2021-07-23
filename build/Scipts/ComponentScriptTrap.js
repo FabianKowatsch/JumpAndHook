@@ -44,7 +44,6 @@ var JumpandHook;
                     this.trapRigid2.rotateBody(new f.Vector3(5, 0, 0));
                 };
                 this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndComponentAdd);
-                console.log("trap!");
             }
         }
         ComponentScriptTrap.mesh = new f.MeshCube("MeshTrap");

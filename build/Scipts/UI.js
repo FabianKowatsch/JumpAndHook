@@ -7,6 +7,7 @@ var JumpandHook;
         constructor() {
             super(...arguments);
             this.score = 0;
+            this.time = 0;
         }
         reduceMutator(_mutator) {
             return;
@@ -26,7 +27,7 @@ var JumpandHook;
     JumpandHook.uiLive = new LiveUi();
     JumpandHook.uiMenu = new MenuUi();
     class UI {
-        static startLive() {
+        static updateLive() {
             let ui = document.getElementById("ui");
             UI.controllerLive = new fUi.Controller(JumpandHook.uiLive, ui);
             UI.controllerLive.updateUserInterface();

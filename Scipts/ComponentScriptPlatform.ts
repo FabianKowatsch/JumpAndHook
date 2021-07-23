@@ -11,6 +11,7 @@ namespace JumpandHook {
     public name: string = "CmpScriptPlatform";
     public index: number;
     private timeLoss: number;
+    private timeStart: number;
     private mesh: f.Mesh;
     private material: f.Material;
     private node: f.Node;
@@ -19,13 +20,15 @@ namespace JumpandHook {
     private deathNode: f.Node;
     private isFirst: boolean;
     private allowNextPlatform: boolean = true;
-    constructor(_index: number, _isFirst: boolean, _timeLoss: number) {
+    private isCompleted: boolean = false;
+    constructor(_index: number, _isFirst: boolean, _timeStart: number, _timeLoss: number) {
       super();
       this.mesh = <f.Mesh>f.Project.resources[ComponentScriptPlatform.meshId];
       this.material = <f.Material>f.Project.resources[ComponentScriptPlatform.materialId];
       this.index = _index;
       this.isFirst = _isFirst;
       this.timeLoss = _timeLoss;
+      this.timeStart = _timeStart;
       this.addEventListener(f.EVENT.COMPONENT_ADD, this.hndAdd);
       setTimeout(() => {
         f.Physics.adjustTransforms(this.node.getParent(), true);
@@ -37,7 +40,8 @@ namespace JumpandHook {
 
       if (!this.isFirst) {
         let transform: f.Matrix4x4 = new f.Matrix4x4();
-        transform.translate(new f.Vector3(ComponentScriptPlatform.translationFactor * this.index, 0, Math.random() * 4 - 2));
+        transform.translate(new f.Vector3(ComponentScriptPlatform.translationFactor * this.index, Math.random() * 4 - 2, Math.random() * 4 - 2));
+        transform.rotate(new f.Vector3(0, (Math.random() - 0.5) * 20, 0));
         this.node.addComponent(new f.ComponentTransform(transform));
         this.node.addComponent(new f.ComponentMaterial(new f.Material("MaterialPlatform", f.ShaderFlat, new f.CoatColored(f.Color.CSS("white")))));
         let mesh: f.ComponentMesh = new f.ComponentMesh(this.mesh);
@@ -54,7 +58,15 @@ namespace JumpandHook {
 
       this.addDeathTrigger();
       f.Physics.adjustTransforms(this.node.getParent(), true);
-      let timeout: number = 1000000 - this.index * this.timeLoss;
+      let timeout: number = this.timeStart - this.index * this.timeLoss;
+      let timeLeft: number = timeout;
+      setInterval(() => {
+        if (!this.isCompleted && timeLeft > 0) {
+          timeLeft = timeLeft - 100;
+          uiLive.time = timeLeft / 1000;
+        }
+        // tslint:disable-next-line: align
+      }, 100);
       setTimeout(() => {
         this.sinkPlatform();
         // tslint:disable-next-line: align
@@ -86,7 +98,7 @@ namespace JumpandHook {
     }
 
     private addDeathTrigger(): void {
-      this.deathNode = new f.Node("DeathTrigger" + this.index.toString());
+      this.deathNode = new f.Node("DeathTrigger");
       let cmpRigid: f.ComponentRigidbody = new f.ComponentRigidbody(0, f.PHYSICS_TYPE.STATIC, f.COLLIDER_TYPE.CUBE, f.PHYSICS_GROUP.TRIGGER);
       this.deathNode.addComponent(cmpRigid);
       this.deathNode.addComponent(new f.ComponentTransform());
@@ -100,34 +112,33 @@ namespace JumpandHook {
     private addObstacleOrTrap(): void {
       this.trapNode = new f.Node("trap" + this.index);
       this.node.addChild(this.trapNode);
-      if (this.index % 10 != 0) {
-        // let randomNumber: number = Math.round(Math.random() * 4);
+      let randomNumber: number = Math.round(Math.random() * 4);
 
-        // switch (randomNumber) {
-        //   case 0:
-        //     let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
-        //     this.trapNode.addComponent(cmpScriptObstacle);
-
-        //     break;
-        //   case 1:
-        //     let cmpScriptTrap: ComponentScriptTrap = new ComponentScriptTrap();
-        //     this.trapNode.addComponent(cmpScriptTrap);
-        //     break;
-        //   case 3:
-        //     //let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
-        //     // this.trapNode.addComponent(cmpScriptObstacle);
-        //     break;
-        //   case 4:
-        //     break;
-        //   default:
-        //     break;
-        // }
-        this.allowNextPlatform = false;
-        let cmpScriptObstacle: ComponentScriptBallGame = new ComponentScriptBallGame();
-        this.trapNode.addComponent(cmpScriptObstacle);
-        cmpScriptObstacle.addEventListener(EVENT_PLATFORM.BALL, () => {
-          this.allowNextPlatform = true;
-        });
+      switch (randomNumber) {
+        case 0:
+          let cmpScriptObstacle: ComponentScriptObstacle = new ComponentScriptObstacle();
+          this.trapNode.addComponent(cmpScriptObstacle);
+          break;
+        case 1:
+          let cmpScriptTrap: ComponentScriptTrap = new ComponentScriptTrap();
+          this.trapNode.addComponent(cmpScriptTrap);
+          break;
+        case 3:
+          this.allowNextPlatform = false;
+          let cmpScriptBallGame: ComponentScriptBallGame = new ComponentScriptBallGame();
+          this.trapNode.addComponent(cmpScriptBallGame);
+          cmpScriptBallGame.addEventListener(EVENT_PLATFORM.BALL, () => {
+            this.allowNextPlatform = true;
+          });
+          break;
+        case 4:
+          let cmpScriptProps: ComponentScriptGeneratedProps = new ComponentScriptGeneratedProps();
+          this.trapNode.addComponent(cmpScriptProps);
+          break;
+        default:
+          let cmpScriptObstacle2: ComponentScriptObstacle = new ComponentScriptObstacle();
+          this.trapNode.addComponent(cmpScriptObstacle2);
+          break;
       }
     }
 
@@ -162,9 +173,10 @@ namespace JumpandHook {
 
     private spawnNextPlatform = (_event: f.EventPhysics) => {
       if (_event.cmpRigidbody.physicsType != 1 && _event.cmpRigidbody.getContainer().name === "Avatar" && this.allowNextPlatform) {
+        this.isCompleted = true;
         let nextPlatform: f.Node = new f.Node("platform" + this.index + 1);
         this.node.getParent().addChild(nextPlatform);
-        nextPlatform.addComponent(new ComponentScriptPlatform(this.index + 1, false, this.timeLoss));
+        nextPlatform.addComponent(new ComponentScriptPlatform(this.index + 1, false, this.timeStart, this.timeLoss));
         let trigger: f.ComponentRigidbody = this.triggerNode.getComponent(f.ComponentRigidbody);
         trigger.removeEventListener(f.EVENT_PHYSICS.COLLISION_ENTER, this.spawnNextPlatform);
         this.triggerNode.removeComponent(trigger);

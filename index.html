@@ -13,6 +13,7 @@
     <script src="build/Scipts/ComponentScriptRope.js"></script>
     <script src="build/Scipts/Avatar.js"></script>
     <script src="build/Scipts/ComponentScriptProp.js"></script>
+    <script src="build/Scipts/ComponentScriptGeneratedProps.js"></script>
     <script src="build/Scipts/ComponentScriptBallGame.js"></script>
     <script src="build/Scipts/ComponentScriptTrap.js"></script>
     <script src="build/Scipts/ComponentScriptObstacle.js"></script>
@@ -31,7 +32,15 @@
       <div class="crosshair"></div>
 
       <div id="ui">
-        <input type="text" key="score" placeholder="0" min="0" disabled />
+        <div>
+          <label for="score">SCORE: </label>
+          <input type="text" key="score" placeholder="0" min="0" disabled />
+        </div>
+        <div>
+          <label for="time">TIME: </label>
+          <input type="text" key="time" placeholder="0" min="0" value="0" disabled />
+          <span> s</span>
+        </div>
       </div>
     </div>
     <div id="menu" class="visible">
@@ -44,9 +53,22 @@
           <label for="volume">Lautstärke</label>
           <input type="range" name="volume" key="volume" id="volume" value="10" />
         </div>
+        <div>
+          <ul>
+            <li>Benutze W A S D, um dich zu bewegen!</li>
+            <li>Die Kamera lässt sich mit der Maus steuern</li>
+            <li>Rechte Maustaste: Setzt den Greifhaken ein und <br />zieht dich an statische Objekte heran, bzw. Objekte an dich heran</li>
+            <li>Linke Maustaste: Setzt den Greifhaken ein <br />und stoßt Objekte von dir Weg</li>
+            <li>E: Nimm nahe Objekte auf, lege aufgehobene Objekte ab</li>
+            <li>Leertaste: Springen</li>
+          </ul>
+        </div>
       </div>
 
-      <div id="credits">music by Karl Casey @ White Bat Audio</div>
+      <div id="credits">
+        music by Karl Casey @ White Bat Audio <br />
+        Sound effects obtained from https://www.zapsplat.com
+      </div>
     </div>
   </body>
 </html>

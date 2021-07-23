@@ -32,7 +32,9 @@ var JumpandHook;
                             this.checkKeyboardInputs();
                             this.avatar.move(this.forwardMovement, this.sideMovement);
                             this.avatar.tryGrabLastNode();
-                            f.AudioManager.default.update();
+                            if (f.AudioManager.default.getGraphListeningTo()) {
+                                f.AudioManager.default.update();
+                            }
                             this.viewport.draw();
                             break;
                         case GAMESTATE.MENU:
@@ -74,12 +76,13 @@ var JumpandHook;
                 this.viewport = new f.Viewport();
                 this.initPhysics();
                 this.createAvatar();
-                this.createRigidbodies();
                 this.showScores();
                 this.viewport.initialize("Viewport", this.root, this.cmpCamera, this.canvas);
-                f.AudioManager.default.listenTo(this.root);
-                f.AudioManager.default.listenWith(this.avatar.camNode.getComponent(f.ComponentAudioListener));
                 f.Physics.adjustTransforms(this.root, true);
+                document.addEventListener("click", () => {
+                    f.AudioManager.default.listenTo(this.root);
+                    f.AudioManager.default.listenWith(this.avatar.camNode.getComponent(f.ComponentAudioListener));
+                });
                 document.addEventListener("keydown", this.hndKeyDown.bind(this));
                 document.addEventListener("keyup", this.hndKeyRelease.bind(this));
                 document.addEventListener("mousemove", this.hndMouseMovement.bind(this));
@@ -90,7 +93,7 @@ var JumpandHook;
                     JumpandHook.UI.updateVolume();
                     this.avatar.setVolume(JumpandHook.uiMenu.volume);
                 });
-                JumpandHook.UI.startLive();
+                JumpandHook.UI.updateLive();
             }
             toggleMenu() {
                 switch (this.menu.className) {
@@ -172,7 +175,7 @@ var JumpandHook;
             }
             pointerLockChange(_event) {
                 if (this.isLocked) {
-                    // this.state = GAMESTATE.MENU;
+                    this.state = GAMESTATE.MENU;
                 }
                 this.isLocked = !this.isLocked;
             }
@@ -190,61 +193,28 @@ var JumpandHook;
             setStartingPlatform() {
                 let level = this.root.getChildrenByName("level")[0];
                 let firstPlatform = level.getChildrenByName("platform0")[0];
-                firstPlatform.addComponent(new JumpandHook.ComponentScriptPlatform(0, true, this.config.timeReduction));
-            }
-            createRigidbodies() {
-                let level = this.root.getChildrenByName("level")[0];
-                let cmpRigid;
-                for (let node of level.getChildren()) {
-                    if (node.getChildren().length != 0) {
-                        for (let child of node.getChildren()) {
-                            this.addRigidBasedOnMesh(child);
-                        }
-                    }
-                    this.addRigidBasedOnMesh(node);
-                }
-                let ball = this.root.getChildrenByName("ball")[0];
-                cmpRigid = new f.ComponentRigidbody(7, f.PHYSICS_TYPE.DYNAMIC, f.COLLIDER_TYPE.SPHERE, f.PHYSICS_GROUP.DEFAULT);
-                ball.addComponent(cmpRigid);
-                ball.addComponent(new JumpandHook.ComponentScriptProp());
-            }
-            addRigidBasedOnMesh(node) {
-                if (!node.getComponent(f.ComponentRigidbody)) {
-                    let cmpRigid;
-                    switch (node.getComponent(f.ComponentMesh).mesh.name) {
-                        case "meshCube":
-                            cmpRigid = new f.ComponentRigidbody(0, f.PHYSICS_TYPE.STATIC, f.COLLIDER_TYPE.CUBE, f.PHYSICS_GROUP.DEFAULT);
-                            cmpRigid.restitution = 0;
-                            break;
-                        case "meshExtrusion":
-                            cmpRigid = new f.ComponentRigidbody(0, f.PHYSICS_TYPE.STATIC, f.COLLIDER_TYPE.CUBE, f.PHYSICS_GROUP.DEFAULT);
-                            break;
-                        case "meshSphere":
-                            cmpRigid = new f.ComponentRigidbody(7, f.PHYSICS_TYPE.DYNAMIC, f.COLLIDER_TYPE.SPHERE, f.PHYSICS_GROUP.DEFAULT);
-                            break;
-                        default:
-                            cmpRigid = new f.ComponentRigidbody(0, f.PHYSICS_TYPE.STATIC, f.COLLIDER_TYPE.CUBE, f.PHYSICS_GROUP.DEFAULT);
-                            break;
-                    }
-                    node.addComponent(cmpRigid);
-                }
+                let cmpRigid = new f.ComponentRigidbody(0, f.PHYSICS_TYPE.STATIC, f.COLLIDER_TYPE.CUBE, f.PHYSICS_GROUP.DEFAULT);
+                cmpRigid.restitution = 0;
+                firstPlatform.addComponent(cmpRigid);
+                firstPlatform.getChild(0).addComponent(new f.ComponentRigidbody(0, f.PHYSICS_TYPE.STATIC, f.COLLIDER_TYPE.CUBE, f.PHYSICS_GROUP.DEFAULT));
+                firstPlatform.addComponent(new JumpandHook.ComponentScriptPlatform(0, true, this.config.timeStart, this.config.timeReduction));
             }
             showScores() {
-                if (localStorage.getItem("highscore"))
-                    document.getElementById("highscore").innerHTML = localStorage.getItem("highscore");
-                if (localStorage.getItem("lastscore"))
-                    document.getElementById("lastscore").innerHTML = localStorage.getItem("lastscore");
+                if (sessionStorage.getItem("highscore"))
+                    document.getElementById("highscore").innerHTML = sessionStorage.getItem("highscore");
+                if (sessionStorage.getItem("lastscore"))
+                    document.getElementById("lastscore").innerHTML = sessionStorage.getItem("lastscore");
             }
             setScores() {
-                localStorage.setItem("lastscore", this.solvedPlatforms.toString());
-                if (localStorage.getItem("highscore")) {
-                    let highscore = parseInt(localStorage.getItem("highscore"));
+                sessionStorage.setItem("lastscore", this.solvedPlatforms.toString());
+                if (sessionStorage.getItem("highscore")) {
+                    let highscore = parseInt(sessionStorage.getItem("highscore"));
                     if (this.solvedPlatforms > highscore) {
-                        localStorage.setItem("highscore", this.solvedPlatforms.toString());
+                        sessionStorage.setItem("highscore", this.solvedPlatforms.toString());
                     }
                 }
                 else {
-                    localStorage.setItem("highscore", this.solvedPlatforms.toString());
+                    sessionStorage.setItem("highscore", this.solvedPlatforms.toString());
                 }
             }
         }

@@ -13,7 +13,6 @@ namespace JumpandHook {
     constructor() {
       super();
       this.addEventListener(f.EVENT.COMPONENT_ADD, this.hndComponentAdd);
-      console.log("trap!");
     }
 
     private hndComponentAdd = (): void => {

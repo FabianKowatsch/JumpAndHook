@@ -3,6 +3,7 @@ namespace JumpandHook {
   import fUi = FudgeUserInterface;
   export class LiveUi extends f.Mutable {
     public score: number = 0;
+    public time: number = 0;
     protected reduceMutator(_mutator: f.Mutator): void {
       return;
     }
@@ -17,7 +18,7 @@ namespace JumpandHook {
   export let uiMenu: MenuUi = new MenuUi();
   export class UI {
     private static controllerLive: fUi.Controller;
-    public static startLive(): void {
+    public static updateLive(): void {
       let ui: HTMLDivElement = <HTMLDivElement>document.getElementById("ui");
       UI.controllerLive = new fUi.Controller(uiLive, ui);
       UI.controllerLive.updateUserInterface();
